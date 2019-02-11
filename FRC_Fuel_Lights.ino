@@ -2,8 +2,8 @@
 #define GREENPIN 6
 #define BLUEPIN 3
  
-#define FADESPEED 15
-#define WAITTIME 1000
+#define FADESPEED 5
+#define WAITTIME 2000
  
 void setup() {
   pinMode(REDPIN, OUTPUT);
@@ -13,10 +13,10 @@ void setup() {
  
  
 void loop() {
-  int redOne = 0;
-  int greenOne = 0;
-  int blueOne = 0;
-  int redTwo = 0;
+  int redOne = 255;
+  int greenOne = 255;
+  int blueOne = 255;
+  int redTwo = 255;
   int greenTwo = 0;
   int blueTwo = 0;
   int redCurrent = redOne;
@@ -50,21 +50,6 @@ void loop() {
 
     adjustColour(redCurrent, greenCurrent, blueCurrent);
     delay(FADESPEED);
-  }
-  delay(WAITTIME);
-  
-  int i = 0;
-  while(i < 256) {
-    adjustColour(i, 0, 255-i);
-    delay(FADESPEED);
-    i+=5;
-  }
-  delay(WAITTIME);
-  i = 255;
-  while (i >= 0) {
-    adjustColour(i, 0, 255-i);
-    delay(FADESPEED);
-    i-=5;
   }
   delay(WAITTIME);
 }
