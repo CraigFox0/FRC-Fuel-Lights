@@ -1,3 +1,5 @@
+#include <Colour.h>
+
 #define REDPIN 5
 #define GREENPIN 6
 #define BLUEPIN 3
@@ -13,50 +15,33 @@ void setup() {
  
  
 void loop() {
-  int redOne = 255;
-  int greenOne = 255;
-  int blueOne = 255;
-  int redTwo = 255;
-  int greenTwo = 0;
-  int blueTwo = 0;
-  int redCurrent = redOne;
-  int greenCurrent = greenOne;
-  int blueCurrent = blueOne;
-  adjustColour(redCurrent, greenCurrent, blueCurrent);
+  Colour primaryColour(0, 0, 255);
+  Colour secondaryColour(255, 255, 0);
   
-  while (redCurrent != redTwo || blueCurrent != blueTwo || greenCurrent != greenTwo) {
-    if (redCurrent < redTwo) redCurrent++;
-    else if (redCurrent > redTwo) redCurrent--;
-    
-    if (greenCurrent < greenTwo) greenCurrent++;
-    else if (greenCurrent > greenTwo) greenCurrent--;
-    
-    if (blueCurrent < blueTwo) blueCurrent++;
-    else if (blueCurrent > blueTwo) blueCurrent--;
+  transitionFromColourToColour(primaryColour, secondaryColour);
+  transitionFromColourToColour(secondaryColour, primaryColour);
+}
 
-    adjustColour(redCurrent, greenCurrent, blueCurrent);
-    delay(FADESPEED);
-  }
-  delay(WAITTIME);
-  while (redCurrent != redOne || blueCurrent != blueOne || greenCurrent != greenOne) {
-    if (redCurrent < redOne) redCurrent++;
-    else if (redCurrent > redOne) redCurrent--;
-    
-    if (greenCurrent < greenOne) greenCurrent++;
-    else if (greenCurrent > greenOne) greenCurrent--;
-    
-    if (blueCurrent < blueOne) blueCurrent++;
-    else if (blueCurrent > blueOne) blueCurrent--;
+void adjustColour(Colour colour){
+  analogWrite(REDPIN, colour.getRed());
+  analogWrite(GREENPIN, colour.getGreen());
+  analogWrite(BLUEPIN, colour.getBlue());
+}
 
-    adjustColour(redCurrent, greenCurrent, blueCurrent);
+void transitionFromColourToColour(Colour startingColour, Colour endingColour) {
+  Colour currentColour = startingColour;
+  while (!currentColour.equals(endingColour)) {
+    if (currentColour.getRed() < endingColour.getRed()) currentColour.setRed(currentColour.getRed()+1);
+    else if (currentColour.getRed() > endingColour.getRed()) currentColour.setRed(currentColour.getRed()-1);
+    
+    if (currentColour.getGreen() < endingColour.getGreen()) currentColour.setGreen(currentColour.getGreen()+1);
+    else if (currentColour.getGreen() > endingColour.getGreen()) currentColour.setGreen(currentColour.getGreen()-1);
+    
+    if (currentColour.getBlue() < endingColour.getBlue()) currentColour.setBlue(currentColour.getBlue()+1);
+    else if (currentColour.getBlue() > endingColour.getBlue()) currentColour.setBlue(currentColour.getBlue()-1);
+
+    adjustColour(currentColour);
     delay(FADESPEED);
   }
   delay(WAITTIME);
 }
-
-void adjustColour(int r, int g, int b){
-  analogWrite(REDPIN, r);
-  analogWrite(GREENPIN, g);
-  analogWrite(BLUEPIN, b);
-}
-
